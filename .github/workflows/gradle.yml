@@ -30,4 +30,4 @@ jobs:
           TESTCONTAINERS_RYUK_DISABLED: true
         run: |
           export DOCKER_IMAGE="${DOCKER_REGISTRY_URL}/valhallabot2"
-          ./gradlew check dockerPush --no-daemon
+          ./gradlew check dockerPush --no-daemon --debug

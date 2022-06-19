@@ -3,7 +3,7 @@ plugins {
     id("io.micronaut.application") version "3.4.1"
 }
 
-version = "0.1"
+version = "2.0"
 group = "com.valhalla"
 
 repositories {
@@ -36,11 +36,8 @@ java {
 
 tasks {
     dockerBuild {
-        images = ["${System.env.DOCKER_IMAGE ?: project.name}:$project.version"]
-    }
-
-    dockerBuildNative {
-        images = ["${System.env.DOCKER_IMAGE ?: project.name}:$project.version"]
+        images = ["${System.env.DOCKER_IMAGE ?: project.name}:$project.version",
+                  "${System.env.DOCKER_IMAGE ?: project.name}:latest"]
     }
 }
 graalvmNative.toolchainDetection = false

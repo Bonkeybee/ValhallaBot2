@@ -31,4 +31,5 @@ jobs:
           TESTCONTAINERS_RYUK_DISABLED: true
         run: |
           export DOCKER_IMAGE=`echo "${DOCKER_REGISTRY_URL}/${DOCKER_REPOSITORY_PATH}/valhallabot2" | sed -e 's#//#/#' -e 's#^/##'`
+          echo $DOCKER_IMAGE
           ./gradlew check dockerPush --no-daemon

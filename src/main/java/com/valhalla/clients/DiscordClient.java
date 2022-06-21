@@ -23,7 +23,7 @@ public class DiscordClient {
 			final JDABuilder builder = JDABuilder.createDefault(discord.getToken());
 			try {
 				client = builder.build();
-			} catch (LoginException e) {
+			} catch (final LoginException e) {
 				throw new InternalServerException("Failed to start Discord bot.", e);
 			}
 		}

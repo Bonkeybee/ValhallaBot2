@@ -1,6 +1,0 @@
-applicationType: default
-defaultPackage: com.valhalla
-testFramework: junit
-sourceLanguage: java
-buildTool: gradle
-features: [annotation-api, app-name, github-workflow-docker-registry, gradle, http-client, jackson-databind, java, java-application, jax-rs, junit, log4j2, micronaut-build, netty-server, readme, shade, yaml]

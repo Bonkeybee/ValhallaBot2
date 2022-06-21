@@ -2,30 +2,29 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.micronaut.application") version "3.4.1"
 }
-
 version = "2.0"
 group = "com.valhalla"
-
 repositories {
     mavenCentral()
 }
-
 dependencies {
-    annotationProcessor("io.micronaut:micronaut-http-validation")
-    annotationProcessor("io.micronaut.jaxrs:micronaut-jaxrs-processor")
-    implementation("io.micronaut:micronaut-http-client")
-    implementation("io.micronaut:micronaut-jackson-databind")
-    implementation("io.micronaut.jaxrs:micronaut-jaxrs-server")
-    implementation("jakarta.annotation:jakarta.annotation-api")
-    implementation("org.apache.logging.log4j:log4j-core:2.17.2")
-    runtimeOnly("org.apache.logging.log4j:log4j-api:2.17.2")
-    runtimeOnly("org.apache.logging.log4j:log4j-slf4j-impl:2.17.2")
-    testAnnotationProcessor("io.micronaut.jaxrs:micronaut-jaxrs-processor")
-    implementation("io.micronaut:micronaut-validation")
+    annotationProcessor('io.micronaut:micronaut-http-validation:3.5.1')
+    annotationProcessor('io.micronaut.jaxrs:micronaut-jaxrs-processor:3.2.1')
 
+    compileOnly('org.graalvm.nativeimage:svm:22.1.0.1')
+
+    implementation('io.micronaut:micronaut-validation:3.5.1')
+    implementation('io.micronaut:micronaut-http-client:3.5.1')
+    implementation('io.micronaut:micronaut-jackson-databind:3.5.1')
+    implementation('io.micronaut.aws:micronaut-aws-parameter-store:3.5.1')
+    implementation('io.micronaut.jaxrs:micronaut-jaxrs-server:3.2.1')
+    implementation('jakarta.annotation:jakarta.annotation-api:2.1.0')
+    implementation("net.dv8tion:JDA:5.0.0-alpha.12")
+
+    runtimeOnly('ch.qos.logback:logback-classic:1.2.11')
+
+    testAnnotationProcessor('io.micronaut.jaxrs:micronaut-jaxrs-processor:3.2.1')
 }
-
-
 application {
     mainClass.set("com.valhalla.Application")
 }
@@ -33,7 +32,6 @@ java {
     sourceCompatibility = JavaVersion.toVersion("17")
     targetCompatibility = JavaVersion.toVersion("17")
 }
-
 tasks {
     dockerBuild {
         images = ["${System.env.DOCKER_IMAGE ?: project.name}:$project.version",
@@ -49,6 +47,3 @@ micronaut {
         annotations("com.valhalla.*")
     }
 }
-
-
-

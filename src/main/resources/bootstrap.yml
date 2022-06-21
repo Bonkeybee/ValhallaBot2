@@ -1,0 +1,15 @@
+micronaut:
+  server:
+    port: 8080
+  application:
+    name: valhallabot2
+  config-client:
+    enabled: true
+  http:
+    client:
+      read-timeout: 30s
+aws:
+  client:
+    system-manager:
+      parameterstore:
+        enabled: true

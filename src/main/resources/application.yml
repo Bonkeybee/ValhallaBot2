@@ -1,6 +1,3 @@
-micronaut:
-  application:
-    name: valhallaBot2
 netty:
   default:
     allocator:

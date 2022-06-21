@@ -3,7 +3,7 @@
         <withJansi>false</withJansi>
         <encoder>
             <pattern>
-                %cyan(%d{HH:mm:ss.SSS}) %highlight(%-5level) %magenta(%logger{36}) - %msg %replace(\(%X{trackingId}\)){'\(\)', ''}%n
+                %d{HH:mm:ss.SSS} %-5level %logger{36} - %msg %replace(\(%X{trackingId}\)){'\(\)', ''}%n
             </pattern>
         </encoder>
     </appender>

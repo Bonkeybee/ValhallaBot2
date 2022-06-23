@@ -66,6 +66,11 @@ public class AwsPollyClient {
 	}
 
 	private synchronized void cleanupStorage() {
+		try {
+			Files.createDirectories(Paths.get(STORAGE_DIRECTORY));
+		} catch (IOException e) {
+			throw new InternalServerException("Failed to create directories.", e);
+		}
 		try (final Stream<Path> paths = Files.walk(Paths.get(STORAGE_DIRECTORY))) {
 			paths.filter(Files::isRegularFile)
 				.forEach(path -> {

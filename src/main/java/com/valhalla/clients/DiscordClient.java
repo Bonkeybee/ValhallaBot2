@@ -40,44 +40,24 @@ public class DiscordClient {
 
 	public synchronized JDA getClient() {
 		if (client == null) {
+			LOG.info("Discord Bot initializing...");
 			final JDABuilder builder = JDABuilder.createDefault(discordConfiguration.getGreeterToken());
 			try {
 				client = builder.enableCache(CacheFlag.VOICE_STATE)
 					.enableIntents(GatewayIntent.GUILD_VOICE_STATES)
 					.build()
 					.awaitReady();
-				LOG.info("{} ready.", this.getClass()
-					.getSimpleName());
+				LOG.info("Discord Bot ready.");
 			} catch (final LoginException e) {
-				throw new InternalServerException("Failed to start Discord bot.", e);
+				throw new InternalServerException("Failed to start Discord Bot.", e);
 			} catch (final InterruptedException e) {
 				Thread.currentThread()
 					.interrupt();
 				throw new InternalServerException("Interrupted exception.", e);
 			}
 		}
-		if (audioPlayerSendHandler == null) {
-			audioPlayerSendHandler = new AudioPlayerSendHandler(audioPlayerManager.getGuildMusicManager().audioPlayer);
-		}
-		if (audioManager == null) {
-			final Guild guild = client.getGuildById(discordConfiguration.getGuildId());
-			if (guild != null) {
-				audioManager = guild.getAudioManager();
-				audioManager.setSendingHandler(audioPlayerSendHandler);
-			}
-		}
+		getAudioManager();
 		return client;
-	}
-
-	public synchronized AudioManager getAudioManager() {
-		if (audioManager == null) {
-			final Guild guild = getClient().getGuildById(discordConfiguration.getGuildId());
-			if (guild != null) {
-				audioManager = guild.getAudioManager();
-				audioManager.setSendingHandler(audioPlayerSendHandler);
-			}
-		}
-		return audioManager;
 	}
 
 	public void play(final String channelId, final String url) {
@@ -88,7 +68,26 @@ public class DiscordClient {
 					.getId())) {
 				getAudioManager().openAudioConnection(channel);
 			}
+			LOG.info("Queueing audio {} in {}[{}].", url, channel.getName(), channelId);
 			audioPlayerManager.queue(url);
 		}
+	}
+
+	private synchronized AudioManager getAudioManager() {
+		if (audioPlayerSendHandler == null) {
+			LOG.info("Discord Bot Audio Player initializing...");
+			audioPlayerSendHandler = new AudioPlayerSendHandler(audioPlayerManager.getGuildMusicManager().audioPlayer);
+		}
+		if (audioManager == null) {
+			final Guild guild = client.getGuildById(discordConfiguration.getGuildId());
+			if (guild != null) {
+				audioManager = guild.getAudioManager();
+				audioManager.setSendingHandler(audioPlayerSendHandler);
+				LOG.info("Discord Bot Audio Player ready.");
+			} else {
+				throw new InternalServerException("Failed to start Discord Bot Audio Player");
+			}
+		}
+		return audioManager;
 	}
 }

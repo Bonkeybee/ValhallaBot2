@@ -4,7 +4,6 @@ import com.valhalla.clients.DiscordClient;
 import com.valhalla.configurations.DiscordConfiguration;
 
 import java.lang.invoke.MethodHandles;
-import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +36,10 @@ public class DataLoader implements ApplicationEventListener<StartupEvent> {
 	@Override
 	public void onApplicationEvent(final StartupEvent event) {
 		LOG.info("Initializing startup...");
-		discordClient.play(discordConfiguration.getGeneralChannelId(), Objects.requireNonNull(this.getClass()
-				.getClassLoader()
-				.getResource("sounds/startup.flac"))
-			.getFile());
+		//		discordClient.play(discordConfiguration.getGeneralChannelId(), Objects.requireNonNull(this.getClass()
+		//				.getClassLoader()
+		//				.getResource("sounds/startup.flac"))
+		//			.getFile());
 		LOG.info("Adding DiscordClient listeners...");
 		discordClient.getClient()
 			.addEventListener(greeterListener);

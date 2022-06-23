@@ -40,17 +40,19 @@ public class DiscordClient {
 
 	public synchronized JDA getClient() {
 		if (client == null) {
-			LOG.info("Discord Bot initializing...");
-			final JDABuilder builder = JDABuilder.createDefault(discordConfiguration.getGreeterToken());
 			try {
-				client = builder.enableCache(CacheFlag.VOICE_STATE)
+				LOG.info("Discord Bot initializing...");
+				client = JDABuilder.createDefault(discordConfiguration.getGreeterToken())
+					.enableCache(CacheFlag.VOICE_STATE)
 					.enableIntents(GatewayIntent.GUILD_VOICE_STATES)
 					.build()
 					.awaitReady();
 				LOG.info("Discord Bot ready.");
 			} catch (final LoginException e) {
+				LOG.error("LoginException!", e);
 				throw new InternalServerException("Failed to start Discord Bot.", e);
 			} catch (final InterruptedException e) {
+				LOG.error("InterruptedException", e);
 				Thread.currentThread()
 					.interrupt();
 				throw new InternalServerException("Interrupted exception.", e);

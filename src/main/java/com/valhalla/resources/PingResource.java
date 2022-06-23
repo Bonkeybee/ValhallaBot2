@@ -8,7 +8,7 @@ import io.micronaut.validation.Validated;
 
 @Validated
 @Controller
-public class Ping {
+public class PingResource {
 
 	@Get(uri = "/ping", produces = MediaType.TEXT_PLAIN)
 	public String ping() {

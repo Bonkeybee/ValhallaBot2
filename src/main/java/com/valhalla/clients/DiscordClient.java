@@ -45,20 +45,22 @@ public class DiscordClient {
 				client = JDABuilder.createDefault(discordConfiguration.getGreeterToken())
 					.enableCache(CacheFlag.VOICE_STATE)
 					.enableIntents(GatewayIntent.GUILD_VOICE_STATES)
-					.build()
-					.awaitReady();
-				LOG.info("Discord Bot ready.");
+					.build();
 			} catch (final LoginException e) {
 				LOG.error("LoginException!", e);
 				throw new InternalServerException("Failed to start Discord Bot.", e);
+			}
+		} else {
+			try {
+				client.awaitReady();
 			} catch (final InterruptedException e) {
 				LOG.error("InterruptedException", e);
 				Thread.currentThread()
 					.interrupt();
 				throw new InternalServerException("Interrupted exception.", e);
 			}
+			LOG.info("Discord Bot ready.");
 		}
-		getAudioManager();
 		return client;
 	}
 

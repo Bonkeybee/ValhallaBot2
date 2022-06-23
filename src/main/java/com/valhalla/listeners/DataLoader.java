@@ -36,10 +36,12 @@ public class DataLoader implements ApplicationEventListener<StartupEvent> {
 
 	@Override
 	public void onApplicationEvent(final StartupEvent event) {
+		LOG.info("Initializing startup...");
 		discordClient.play(discordConfiguration.getGeneralChannelId(), Objects.requireNonNull(this.getClass()
 				.getClassLoader()
 				.getResource("sounds/startup.flac"))
 			.getFile());
+		LOG.info("Adding DiscordClient listeners...");
 		discordClient.getClient()
 			.addEventListener(greeterListener);
 		LOG.info("Startup complete!");

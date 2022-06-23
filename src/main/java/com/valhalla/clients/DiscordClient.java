@@ -82,7 +82,7 @@ public class DiscordClient {
 
 	public void play(final String channelId, final String url) {
 		final VoiceChannel channel = getClient().getVoiceChannelById(channelId);
-		if (channel != null) {
+		if (channel != null && url != null) {
 			if (!getAudioManager().isConnected() || !channel.getId()
 				.equals(Objects.requireNonNull(getAudioManager().getConnectedChannel())
 					.getId())) {

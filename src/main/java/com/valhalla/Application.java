@@ -20,12 +20,17 @@ public class Application {
 	private static JDA client;
 
 	public static void main(String[] args) throws LoginException, InterruptedException {
-		Micronaut.run(Application.class, args);
-		client = JDABuilder.createLight("OTM1MDQ5NzMwNTM3NDMxMTYw.GYdgym.jbGO-a7W2aauiP1jSphCNvh17fKMU8yIXwoZuU")
+		client = JDABuilder.createLight(System.getenv()
+				.get("GREETER_TOKEN"))
 			.enableCache(CacheFlag.VOICE_STATE)
 			.enableIntents(GatewayIntent.GUILD_VOICE_STATES)
-			.build()
-			.awaitReady();
+			.build();
+		client.awaitReady();
+		Micronaut.run(Application.class, args);
 		LOG.info("Application ready.");
+	}
+
+	public static JDA getDiscordClient() {
+		return client;
 	}
 }

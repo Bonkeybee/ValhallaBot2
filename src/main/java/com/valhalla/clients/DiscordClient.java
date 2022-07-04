@@ -42,7 +42,7 @@ public class DiscordClient {
 		if (client == null) {
 			try {
 				LOG.info("Discord Bot initializing...");
-				client = JDABuilder.createDefault(discordConfiguration.getGreeterToken())
+				client = JDABuilder.createLight(discordConfiguration.getGreeterToken())
 					.enableCache(CacheFlag.VOICE_STATE)
 					.enableIntents(GatewayIntent.GUILD_VOICE_STATES)
 					.build();

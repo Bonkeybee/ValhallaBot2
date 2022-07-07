@@ -13,4 +13,4 @@ jobs:
           image_name: valhallabot2
           image_tag: latest,v2
           dockerfile: ./build/docker/main/Dockerfile
-          context: .
+          context: ./build

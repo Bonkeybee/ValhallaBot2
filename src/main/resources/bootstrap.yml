@@ -13,6 +13,3 @@ aws:
     system-manager:
       parameterstore:
         enabled: true
-discord:
-  greeter:
-    token: ${GREETER_TOKEN}

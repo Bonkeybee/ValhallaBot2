@@ -2,6 +2,3 @@ netty:
   default:
     allocator:
       max-order: 3
-discord:
-  greeter:
-    token: ${GREETER_TOKEN}

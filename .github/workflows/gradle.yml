@@ -12,5 +12,5 @@ jobs:
           project_id: vernal-union-355622
           image_name: valhallabot2
           image_tag: latest,v2
-          dockerfile: ./build/docker/main/Dockerfile
-          context: ./build
+          dockerfile: ./Dockerfile
+          context: ./

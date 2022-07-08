@@ -3,7 +3,6 @@ package com.valhalla.clients;
 import com.valhalla.Application;
 import com.valhalla.audio.AudioPlayerSendHandler;
 import com.valhalla.audio.PlayerManager;
-import com.valhalla.configurations.DiscordConfiguration;
 
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
@@ -26,9 +25,6 @@ public class DiscordClient {
 
 	private AudioPlayerSendHandler audioPlayerSendHandler;
 	private AudioManager audioManager;
-
-	@Inject
-	private DiscordConfiguration discordConfiguration;
 
 	@Inject
 	private PlayerManager audioPlayerManager;
@@ -56,7 +52,8 @@ public class DiscordClient {
 			audioPlayerSendHandler = new AudioPlayerSendHandler(audioPlayerManager.getGuildMusicManager().audioPlayer);
 		}
 		if (audioManager == null) {
-			final Guild guild = getClient().getGuildById(discordConfiguration.getGuildId());
+			final Guild guild = getClient().getGuildById(System.getenv()
+				.get("GUILD_ID"));
 			if (guild != null) {
 				audioManager = guild.getAudioManager();
 				audioManager.setSendingHandler(audioPlayerSendHandler);

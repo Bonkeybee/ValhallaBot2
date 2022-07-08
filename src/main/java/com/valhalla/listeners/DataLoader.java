@@ -1,7 +1,6 @@
 package com.valhalla.listeners;
 
 import com.valhalla.clients.DiscordClient;
-import com.valhalla.configurations.DiscordConfiguration;
 
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
@@ -26,9 +25,6 @@ public class DataLoader implements ApplicationEventListener<StartupEvent> {
 	@Inject
 	private GreeterListener greeterListener;
 
-	@Inject
-	private DiscordConfiguration discordConfiguration;
-
 	public DataLoader(final EmbeddedServer embeddedServer) {
 		LOG.info("Listening on {}://{}:{} (isServer={}, isKeepAlive={})", embeddedServer.getScheme(), embeddedServer.getHost(), embeddedServer.getPort(), embeddedServer.isServer(),
 			embeddedServer.isKeepAlive());
@@ -37,7 +33,8 @@ public class DataLoader implements ApplicationEventListener<StartupEvent> {
 	@Override
 	public void onApplicationEvent(final StartupEvent event) {
 		LOG.info("Initializing startup...");
-		discordClient.play(discordConfiguration.getGeneralChannelId(), Objects.requireNonNull(this.getClass()
+		discordClient.play(System.getenv()
+			.get("GENERAL_VOICE_ID"), Objects.requireNonNull(this.getClass()
 				.getClassLoader()
 				.getResource("sounds/startup.flac"))
 			.getFile());

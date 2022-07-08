@@ -1,7 +1,14 @@
 name: Push to GCR GitHub Action
-on: [ push ]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 jobs:
   build-and-push-to-gcr:
+    name: "Building and pushing images"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -13,4 +20,5 @@ jobs:
           image_name: valhallabot2
           image_tag: latest,v2
           dockerfile: ./docker/Dockerfile
-          context: ./
+          context: ./docker
+          target: build

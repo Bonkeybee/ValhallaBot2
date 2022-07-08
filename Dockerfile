@@ -1,8 +1,4 @@
 FROM openjdk:17-alpine
-WORKDIR /home/app
-COPY layers/libs /home/app/libs
-COPY layers/classes /home/app/classes
-COPY layers/resources /home/app/resources
-COPY layers/application.jar /home/app/application.jar
+COPY build/libs/valhallabot2-*-all.jar valhallabot2.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/home/app/application.jar"]
+CMD java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dcom.sun.management.jmxremote -noverify ${JAVA_OPTS} -jar valhallabot2.jar

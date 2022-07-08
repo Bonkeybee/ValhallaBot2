@@ -38,6 +38,9 @@ java {
     sourceCompatibility = JavaVersion.toVersion("17")
     targetCompatibility = JavaVersion.toVersion("17")
 }
+shadowJar {
+    mergeServiceFiles()
+}
 tasks {
     dockerBuild {
         images = ["${System.env.DOCKER_IMAGE ?: project.name}/$project.version",

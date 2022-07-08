@@ -1,4 +1,4 @@
 steps:
-  - name: 'jdk17'
+  - name: gradle:jdk17
     entrypoint: gradle
     args: [ 'build' ]

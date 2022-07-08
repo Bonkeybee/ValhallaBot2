@@ -31,7 +31,7 @@ public class GreeterListener implements EventListener {
 					.equals(System.getenv()
 						.get("GENERAL_VOICE_ID"))) {
 					String name = guildVoiceJoinEvent.getMember()
-						.getNickname()
+						.getEffectiveName()
 						.trim();
 					name = name.split("[ /]")[0];
 					discordClient.play(System.getenv()
@@ -48,7 +48,7 @@ public class GreeterListener implements EventListener {
 					.equals(System.getenv()
 						.get("GENERAL_VOICE_ID"))) {
 					String name = guildVoiceLeaveEvent.getMember()
-						.getNickname()
+						.getEffectiveName()
 						.trim();
 					name = name.split("[ /]")[0];
 					discordClient.play(System.getenv()
@@ -65,7 +65,7 @@ public class GreeterListener implements EventListener {
 					.equals(System.getenv()
 						.get("GENERAL_VOICE_ID"))) {
 					String name = guildVoiceMoveEvent.getMember()
-						.getNickname()
+						.getEffectiveName()
 						.trim();
 					name = name.split("[ /]")[0];
 					discordClient.play(System.getenv()
@@ -75,7 +75,7 @@ public class GreeterListener implements EventListener {
 					.equals(System.getenv()
 						.get("GENERAL_VOICE_ID"))) {
 					String name = guildVoiceMoveEvent.getMember()
-						.getNickname()
+						.getEffectiveName()
 						.trim();
 					name = name.split("[ /]")[0];
 					discordClient.play(System.getenv()

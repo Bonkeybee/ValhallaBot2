@@ -41,6 +41,14 @@ public class DiscordClient {
 					.getId())) {
 				getAudioManager().openAudioConnection(channel);
 			}
+			while (!getAudioManager().isConnected()) {
+				try {
+					Thread.sleep(1000);
+				} catch (final InterruptedException e) {
+					Thread.currentThread()
+						.interrupt();
+				}
+			}
 			LOG.info("Queueing audio {} in {}[{}].", url, channel.getName(), channelId);
 			audioPlayerManager.queue(url);
 		}

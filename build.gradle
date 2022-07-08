@@ -40,8 +40,8 @@ java {
 }
 tasks {
     dockerBuild {
-        images = ["${System.env.DOCKER_IMAGE ?: project.name}:$project.version",
-                  "${System.env.DOCKER_IMAGE ?: project.name}:latest"]
+        images = ["${System.env.DOCKER_IMAGE ?: project.name}/$project.version",
+                  "${System.env.DOCKER_IMAGE ?: project.name}/latest"]
     }
 }
 graalvmNative.toolchainDetection = false

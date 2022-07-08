@@ -63,7 +63,9 @@ public class GreeterListener implements EventListener {
 				if (guildVoiceMoveEvent.getChannelJoined()
 					.getId()
 					.equals(System.getenv()
-						.get("GENERAL_VOICE_ID"))) {
+						.get("GENERAL_VOICE_ID")) && !guildVoiceMoveEvent.getChannelLeft()
+					.getId()
+					.equals(System.getenv("GENERAL_VOICE_ID"))) {
 					String name = guildVoiceMoveEvent.getMember()
 						.getEffectiveName()
 						.trim();
@@ -71,6 +73,9 @@ public class GreeterListener implements EventListener {
 					discordClient.play(System.getenv()
 						.get("GENERAL_VOICE_ID"), awsPollyClient.synthesize("Wassup, " + name));
 				} else if (guildVoiceMoveEvent.getChannelLeft()
+					.getId()
+					.equals(System.getenv()
+						.get("GENERAL_VOICE_ID")) && !guildVoiceMoveEvent.getChannelJoined()
 					.getId()
 					.equals(System.getenv()
 						.get("GENERAL_VOICE_ID"))) {

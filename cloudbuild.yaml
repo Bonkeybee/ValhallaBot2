@@ -6,4 +6,7 @@ steps:
     args: [ 'build', '-t', 'us-docker.pkg.dev/vernal-union-355622/gcr.io/valhallabot2', '.' ]
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'push', 'us-docker.pkg.dev/vernal-union-355622/gcr.io/valhallabot2' ]
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: [ 'run', 'deploy', 'valhallabot2', '--image', 'gcr.io/vernal-union-355622/valhallabot2', '--region', 'us', '--platform', 'managed' ]
 images: [ 'us-docker.pkg.dev/vernal-union-355622/gcr.io/valhallabot2' ]

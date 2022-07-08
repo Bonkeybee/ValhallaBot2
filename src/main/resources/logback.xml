@@ -1,13 +1,13 @@
 <configuration>
+    <!--    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">-->
+    <!--        <withJansi>false</withJansi>-->
+    <!--        <encoder>-->
+    <!--            <pattern>-->
+    <!--                %d{HH:mm:ss.SSS} %-5level %logger{36} - %msg %replace(\(%X{trackingId}\)){'\(\)', ''}%n-->
+    <!--            </pattern>-->
+    <!--        </encoder>-->
+    <!--    </appender>-->
     <include resource="io/micronaut/gcp/logging/logback-json-appender.xml"/>
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <withJansi>false</withJansi>
-        <encoder>
-            <pattern>
-                %d{HH:mm:ss.SSS} %-5level %logger{36} - %msg %replace(\(%X{trackingId}\)){'\(\)', ''}%n
-            </pattern>
-        </encoder>
-    </appender>
     <root level="INFO">
         <appender-ref ref="CONSOLE_JSON"/>
     </root>

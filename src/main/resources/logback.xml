@@ -1,4 +1,5 @@
 <configuration>
+    <include resource="io/micronaut/gcp/logging/logback-json-appender.xml"/>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <withJansi>false</withJansi>
         <encoder>
@@ -7,8 +8,8 @@
             </pattern>
         </encoder>
     </appender>
-    <root level="info">
-        <appender-ref ref="STDOUT"/>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE_JSON"/>
     </root>
     <logger name="io.micronaut.http.client" level="INFO"/>
     <logger name="io.micronaut.context.condition" level="INFO"/>

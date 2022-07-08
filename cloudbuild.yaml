@@ -4,3 +4,5 @@ steps:
     args: [ 'build' ]
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build', '-t', 'us-docker.pkg.dev/vernal-union-355622/gcr.io/valhallabot2', '.' ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'push', 'us-docker.pkg.dev/vernal-union-355622/gcr.io/valhallabot2' ]

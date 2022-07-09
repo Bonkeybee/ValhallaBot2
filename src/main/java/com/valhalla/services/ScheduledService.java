@@ -32,7 +32,6 @@ public class ScheduledService {
 	@Scheduled(initialDelay = "120s")
 	public void startup() {
 		discordClient.play(configuration.generalVoiceId, Objects.requireNonNull(this.getClass()
-				.getClassLoader()
 				.getResource(STARTUP_THEME_PATH))
 			.getFile());
 		stateService.setDiscordClientReady(true);

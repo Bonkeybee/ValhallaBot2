@@ -22,9 +22,6 @@ public class DataLoader implements ApplicationEventListener<StartupEvent> {
 	@Inject
 	private DiscordClient discordClient;
 
-	@Inject
-	private GreeterListener greeterListener;
-
 	public DataLoader(final EmbeddedServer embeddedServer) {
 		LOG.info("Listening on {}://{}:{} (isServer={}, isKeepAlive={})", embeddedServer.getScheme(), embeddedServer.getHost(), embeddedServer.getPort(), embeddedServer.isServer(),
 			embeddedServer.isKeepAlive());
@@ -38,9 +35,6 @@ public class DataLoader implements ApplicationEventListener<StartupEvent> {
 				.getClassLoader()
 				.getResource("sounds/startup.flac"))
 			.getFile());
-		LOG.info("Adding DiscordClient listeners...");
-		discordClient.getClient()
-			.addEventListener(greeterListener);
 		LOG.info("Startup complete!");
 	}
 }

@@ -1,12 +1,55 @@
+#steps:
+#  - name: gradle:jdk17
+#    entrypoint: gradle
+#    args: [ 'build' ]
+#  - name: 'gcr.io/cloud-builders/docker'
+#    args: [ 'build', '-t', 'us-docker.pkg.dev/vernal-union-355622/gcr.io/valhallabot2', '.' ]
+#  - name: 'gcr.io/cloud-builders/docker'
+#    args: [ 'push', 'us-docker.pkg.dev/vernal-union-355622/gcr.io/valhallabot2' ]
+#images: [ 'us-docker.pkg.dev/vernal-union-355622/gcr.io/valhallabot2' ]
+
 steps:
-  - name: gradle:jdk17
-    entrypoint: gradle
-    args: [ 'build' ]
-  - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-t', 'us-docker.pkg.dev/vernal-union-355622/gcr.io/valhallabot2', '.' ]
-  - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'push', 'us-docker.pkg.dev/vernal-union-355622/gcr.io/valhallabot2' ]
-#  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-#    entrypoint: gcloud
-#    args: [ 'run', 'deploy', 'valhallabot2', '--image', 'us-docker.pkg.dev/vernal-union-355622/gcr.io/valhallabot2', '--region', 'us', '--platform', 'managed' ]
-images: [ 'us-docker.pkg.dev/vernal-union-355622/gcr.io/valhallabot2' ]
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - '--no-cache'
+      - '-t'
+      - '$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+      - .
+      - '-f'
+      - Dockerfile
+    id: Build
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - '$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+    id: Push
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    args:
+      - run
+      - services
+      - update
+      - $_SERVICE_NAME
+      - '--platform=managed'
+      - '--image=$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+      - >-
+        --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID,$_LABELS
+      - '--region=$_DEPLOY_REGION'
+      - '--quiet'
+    id: Deploy
+    entrypoint: gcloud
+images:
+  - '$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+options:
+  substitutionOption: ALLOW_LOOSE
+substitutions:
+  _PLATFORM: managed
+  _SERVICE_NAME: valhallabot2
+  _DEPLOY_REGION: us-central1
+  _LABELS: gcb-trigger-id=d7160db1-c11a-4715-9478-4d781b213aa6
+  _TRIGGER_ID: d7160db1-c11a-4715-9478-4d781b213aa6
+  _GCR_HOSTNAME: us.gcr.io
+tags:
+  - gcp-cloud-build-deploy-cloud-run
+  - gcp-cloud-build-deploy-cloud-run-managed
+  - valhallabot2

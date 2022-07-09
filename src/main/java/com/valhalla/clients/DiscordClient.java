@@ -8,6 +8,8 @@ import com.valhalla.services.StateService;
 
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.security.auth.login.LoginException;
 
@@ -20,6 +22,7 @@ import jakarta.inject.Singleton;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.ISnowflake;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.managers.AudioManager;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -56,6 +59,7 @@ public class DiscordClient {
 					.addEventListeners(new GreeterListener(discordConfiguration, stateService, this, awsPollyClient))
 					.build()
 					.awaitReady();
+				waitForDisconnect(client);
 			} catch (final LoginException e) {
 				LOG.error("LoginException occurred while initializing {}", this.getClass()
 					.getSimpleName(), e);
@@ -80,6 +84,22 @@ public class DiscordClient {
 			}
 			LOG.info("Queueing audio {} in {}[{}].", url, channel.getName(), channelId);
 			audioPlayerManager.queue(url);
+		}
+	}
+
+	private void waitForDisconnect(final JDA client) throws InterruptedException {
+		Set<String> members = Objects.requireNonNull(client.getVoiceChannelById(discordConfiguration.generalVoiceId))
+			.getMembers()
+			.stream()
+			.map(ISnowflake::getId)
+			.collect(Collectors.toSet());
+		while (members.contains(discordConfiguration.greeterId)) {
+			Thread.sleep(1000);
+			members = Objects.requireNonNull(client.getVoiceChannelById(discordConfiguration.generalVoiceId))
+				.getMembers()
+				.stream()
+				.map(ISnowflake::getId)
+				.collect(Collectors.toSet());
 		}
 	}
 

@@ -6,6 +6,9 @@ import jakarta.inject.Singleton;
 @Singleton
 public class DiscordConfiguration {
 
+	@Value("${GREETER_ID}")
+	public String greeterId;
+
 	@Value("${GREETER_TOKEN}")
 	public String greeterToken;
 

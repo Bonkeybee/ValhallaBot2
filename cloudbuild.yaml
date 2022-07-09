@@ -9,15 +9,11 @@
 #images: [ 'us-docker.pkg.dev/vernal-union-355622/gcr.io/valhallabot2' ]
 
 steps:
+  - name: gradle:jdk17
+    entrypoint: gradle
+    args: [ 'build' ]
   - name: gcr.io/cloud-builders/docker
-    args:
-      - build
-      - '--no-cache'
-      - '-t'
-      - '$_GCR_HOSTNAME/$PROJECT_ID/$_SERVICE_NAME:$COMMIT_SHA'
-      - .
-      - '-f'
-      - Dockerfile
+    args: [ 'build', '--no-cache', '-t', '$_GCR_HOSTNAME/$PROJECT_ID/$_SERVICE_NAME:$COMMIT_SHA', '.', '-f', 'Dockerfile' ]
     id: Build
   - name: gcr.io/cloud-builders/docker
     args:

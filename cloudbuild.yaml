@@ -20,9 +20,10 @@ steps:
     args: [ 'push', 'us-docker.pkg.dev/vernal-union-355622/gcr.io/valhallabot2:$COMMIT_SHA' ]
     id: Push Image
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
-    args: [ 'run', 'services', 'update', 'valhallabot2', '--platform=managed', '--image=us-docker.pkg.dev/vernal-union-355622/gcr.io/valhallabot2:$COMMIT_SHA', '>-', '--labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=d7160db1-c11a-4715-9478-4d781b213aa6', '--region=us-central1', '--quiet' ]
+    args: [ 'run', 'services', 'update', 'valhallabot2', '--platform=managed', '--image=us-docker.pkg.dev/vernal-union-355622/gcr.io/valhallabot2:$COMMIT_SHA', '--labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=d7160db1-c11a-4715-9478-4d781b213aa6', '--region=us-central1', '--quiet' ]
     id: Deploy Image
     entrypoint: gcloud
+
 images:
   - 'us-docker.pkg.dev/vernal-union-355622/gcr.io/valhallabot2:$COMMIT_SHA'
 tags:

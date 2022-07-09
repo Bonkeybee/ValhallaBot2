@@ -1,6 +1,6 @@
 micronaut:
   server:
-    port: ${PORT:9001}
+    port: ${PORT:8080}
   application:
     name: valhallabot2
   config-client:

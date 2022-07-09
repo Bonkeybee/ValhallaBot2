@@ -14,10 +14,10 @@ steps:
     args: [ 'build' ]
     id: Build Project
   - name: gcr.io/cloud-builders/docker
-    args: [ 'build', '--no-cache', '-t', '$_GCR_PREFIX/$PROJECT_ID/$_GCR_HOSTNAME/$_SERVICE_NAME:$COMMIT_SHA', '.', '-f', 'Dockerfile' ]
+    args: [ 'build', '--no-cache', '-t', 'us-docker.pkg.dev/$PROJECT_ID/gcr.io/valhallabot2:$COMMIT_SHA', '.', '-f', 'Dockerfile' ]
     id: Build Image
   - name: gcr.io/cloud-builders/docker
-    args: [ 'push', '$_GCR_PREFIX/$PROJECT_ID/$_GCR_HOSTNAME/$_SERVICE_NAME:$COMMIT_SHA' ]
+    args: [ 'push', 'us-docker.pkg.dev/$PROJECT_ID/gcr.io/valhallabot2:$COMMIT_SHA' ]
     id: Push Image
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     args:
@@ -39,12 +39,9 @@ options:
   substitutionOption: ALLOW_LOOSE
 substitutions:
   _PLATFORM: managed
-  _SERVICE_NAME: valhallabot2
   _DEPLOY_REGION: us-central1
   _LABELS: gcb-trigger-id=d7160db1-c11a-4715-9478-4d781b213aa6
   _TRIGGER_ID: d7160db1-c11a-4715-9478-4d781b213aa6
-  _GCR_PREFIX: us-docker.pkg.dev
-  _GCR_HOSTNAME: gcr.io
 tags:
   - gcp-cloud-build-deploy-cloud-run
   - gcp-cloud-build-deploy-cloud-run-managed

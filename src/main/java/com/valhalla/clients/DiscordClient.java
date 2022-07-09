@@ -3,6 +3,7 @@ package com.valhalla.clients;
 import com.valhalla.audio.AudioPlayerSendHandler;
 import com.valhalla.audio.PlayerManager;
 import com.valhalla.listeners.GreeterListener;
+import com.valhalla.services.StateService;
 
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
@@ -33,6 +34,9 @@ public class DiscordClient {
 	private AudioManager audioManager;
 
 	@Inject
+	private StateService stateService;
+
+	@Inject
 	private PlayerManager audioPlayerManager;
 
 	@Inject
@@ -46,7 +50,7 @@ public class DiscordClient {
 						.get("GREETER_TOKEN"))
 					.enableCache(CacheFlag.VOICE_STATE)
 					.enableIntents(GatewayIntent.GUILD_VOICE_STATES)
-					.addEventListeners(new GreeterListener(this, awsPollyClient))
+					.addEventListeners(new GreeterListener(stateService, this, awsPollyClient))
 					.build()
 					.awaitReady();
 			} catch (final LoginException e) {

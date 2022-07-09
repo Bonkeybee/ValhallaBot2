@@ -2,6 +2,7 @@ package com.valhalla.listeners;
 
 import com.valhalla.clients.AwsPollyClient;
 import com.valhalla.clients.DiscordClient;
+import com.valhalla.services.StateService;
 
 import java.util.Objects;
 
@@ -12,10 +13,12 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class GreeterListener extends ListenerAdapter {
 
+	private final StateService stateService;
 	private final DiscordClient discordClient;
 	private final AwsPollyClient awsPollyClient;
 
-	public GreeterListener(final DiscordClient discordClient, final AwsPollyClient awsPollyClient) {
+	public GreeterListener(final StateService stateService, final DiscordClient discordClient, final AwsPollyClient awsPollyClient) {
+		this.stateService = stateService;
 		this.discordClient = discordClient;
 		this.awsPollyClient = awsPollyClient;
 	}
@@ -25,6 +28,9 @@ public class GreeterListener extends ListenerAdapter {
 		if (event.getMember()
 			.getUser()
 			.isBot()) {
+			return;
+		}
+		if (!stateService.isDiscordClientReady()) {
 			return;
 		}
 		if (Objects.requireNonNull(event.getChannelJoined())
@@ -43,6 +49,9 @@ public class GreeterListener extends ListenerAdapter {
 		if (event.getMember()
 			.getUser()
 			.isBot()) {
+			return;
+		}
+		if (!stateService.isDiscordClientReady()) {
 			return;
 		}
 		if (Objects.requireNonNull(event.getChannelJoined())
@@ -73,6 +82,9 @@ public class GreeterListener extends ListenerAdapter {
 		if (event.getMember()
 			.getUser()
 			.isBot()) {
+			return;
+		}
+		if (!stateService.isDiscordClientReady()) {
 			return;
 		}
 		if (Objects.requireNonNull(event.getChannelLeft())

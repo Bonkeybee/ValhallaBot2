@@ -49,11 +49,11 @@ public class DiscordClient {
 					.addEventListeners(new GreeterListener(this, awsPollyClient))
 					.build()
 					.awaitReady();
-			} catch (LoginException e) {
-				LOG.error("Error occurred while initializing {}", this.getClass()
+			} catch (final LoginException e) {
+				LOG.error("LoginException occurred while initializing {}", this.getClass()
 					.getSimpleName(), e);
-			} catch (InterruptedException e) {
-				LOG.error("Error occurred while initializing {}", this.getClass()
+			} catch (final InterruptedException e) {
+				LOG.error("InterruptedException occurred while initializing {}", this.getClass()
 					.getSimpleName(), e);
 				Thread.currentThread()
 					.interrupt();

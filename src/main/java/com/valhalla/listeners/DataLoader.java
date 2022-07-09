@@ -33,7 +33,7 @@ public class DataLoader implements ApplicationEventListener<StartupEvent> {
 		discordClient.play(System.getenv()
 			.get("GENERAL_VOICE_ID"), Objects.requireNonNull(this.getClass()
 				.getClassLoader()
-				.getResource("sounds/startup.flac"))
+				.getResource("sounds/startup.mp3"))
 			.getFile());
 		LOG.info("Startup complete!");
 	}

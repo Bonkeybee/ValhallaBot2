@@ -18,7 +18,7 @@ public class ScheduledService {
 	private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup()
 		.lookupClass());
 
-	private static final String STARTUP_THEME_PATH = "sounds/startup.flac";
+	private static final String STARTUP_THEME_PATH = "sounds/startup.mp3";
 
 	@Inject
 	private DiscordConfiguration configuration;

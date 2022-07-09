@@ -2,6 +2,7 @@ package com.valhalla.clients;
 
 import com.valhalla.audio.AudioPlayerSendHandler;
 import com.valhalla.audio.PlayerManager;
+import com.valhalla.configurations.DiscordConfiguration;
 import com.valhalla.listeners.GreeterListener;
 import com.valhalla.services.StateService;
 
@@ -34,6 +35,9 @@ public class DiscordClient {
 	private AudioManager audioManager;
 
 	@Inject
+	private DiscordConfiguration discordConfiguration;
+
+	@Inject
 	private StateService stateService;
 
 	@Inject
@@ -46,11 +50,10 @@ public class DiscordClient {
 		if (client == null) {
 			try {
 				LOG.info("Logging into Discord...");
-				client = JDABuilder.createDefault(System.getenv()
-						.get("GREETER_TOKEN"))
+				client = JDABuilder.createDefault(discordConfiguration.greeterToken)
 					.enableCache(CacheFlag.VOICE_STATE)
 					.enableIntents(GatewayIntent.GUILD_VOICE_STATES)
-					.addEventListeners(new GreeterListener(stateService, this, awsPollyClient))
+					.addEventListeners(new GreeterListener(discordConfiguration, stateService, this, awsPollyClient))
 					.build()
 					.awaitReady();
 			} catch (final LoginException e) {
@@ -86,8 +89,7 @@ public class DiscordClient {
 			audioPlayerSendHandler = new AudioPlayerSendHandler(audioPlayerManager.getGuildMusicManager().audioPlayer);
 		}
 		if (audioManager == null) {
-			final Guild guild = getClient().getGuildById(System.getenv()
-				.get("GUILD_ID"));
+			final Guild guild = getClient().getGuildById(discordConfiguration.guildId);
 			if (guild != null) {
 				audioManager = guild.getAudioManager();
 				audioManager.setSendingHandler(audioPlayerSendHandler);

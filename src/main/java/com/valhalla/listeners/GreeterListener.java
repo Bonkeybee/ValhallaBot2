@@ -2,6 +2,7 @@ package com.valhalla.listeners;
 
 import com.valhalla.clients.AwsPollyClient;
 import com.valhalla.clients.DiscordClient;
+import com.valhalla.configurations.DiscordConfiguration;
 import com.valhalla.services.StateService;
 
 import java.util.Objects;
@@ -13,11 +14,13 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class GreeterListener extends ListenerAdapter {
 
+	private final DiscordConfiguration discordConfiguration;
 	private final StateService stateService;
 	private final DiscordClient discordClient;
 	private final AwsPollyClient awsPollyClient;
 
-	public GreeterListener(final StateService stateService, final DiscordClient discordClient, final AwsPollyClient awsPollyClient) {
+	public GreeterListener(final DiscordConfiguration discordConfiguration, final StateService stateService, final DiscordClient discordClient, final AwsPollyClient awsPollyClient) {
+		this.discordConfiguration = discordConfiguration;
 		this.stateService = stateService;
 		this.discordClient = discordClient;
 		this.awsPollyClient = awsPollyClient;
@@ -35,12 +38,12 @@ public class GreeterListener extends ListenerAdapter {
 		}
 		if (Objects.requireNonNull(event.getChannelJoined())
 			.getId()
-			.equals(getVoiceChannelId())) {
+			.equals(discordConfiguration.generalVoiceId)) {
 			String name = event.getMember()
 				.getEffectiveName()
 				.trim();
 			name = name.split("[ /]")[0];
-			discordClient.play(getVoiceChannelId(), awsPollyClient.synthesize("Wassup, " + name));
+			discordClient.play(discordConfiguration.generalVoiceId, awsPollyClient.synthesize("Wassup, " + name));
 		}
 	}
 
@@ -56,24 +59,24 @@ public class GreeterListener extends ListenerAdapter {
 		}
 		if (Objects.requireNonNull(event.getChannelJoined())
 			.getId()
-			.equals(getVoiceChannelId()) && !Objects.requireNonNull(event.getChannelLeft())
+			.equals(discordConfiguration.generalVoiceId) && !Objects.requireNonNull(event.getChannelLeft())
 			.getId()
-			.equals(getVoiceChannelId())) {
+			.equals(discordConfiguration.generalVoiceId)) {
 			String name = event.getMember()
 				.getEffectiveName()
 				.trim();
 			name = name.split("[ /]")[0];
-			discordClient.play(getVoiceChannelId(), awsPollyClient.synthesize("Wassup, " + name));
+			discordClient.play(discordConfiguration.generalVoiceId, awsPollyClient.synthesize("Wassup, " + name));
 		} else if (Objects.requireNonNull(event.getChannelLeft())
 			.getId()
-			.equals(getVoiceChannelId()) && !event.getChannelJoined()
+			.equals(discordConfiguration.generalVoiceId) && !event.getChannelJoined()
 			.getId()
-			.equals(getVoiceChannelId())) {
+			.equals(discordConfiguration.generalVoiceId)) {
 			String name = event.getMember()
 				.getEffectiveName()
 				.trim();
 			name = name.split("[ /]")[0];
-			discordClient.play(getVoiceChannelId(), awsPollyClient.synthesize("Cya later, " + name));
+			discordClient.play(discordConfiguration.generalVoiceId, awsPollyClient.synthesize("Cya later, " + name));
 		}
 	}
 
@@ -89,17 +92,12 @@ public class GreeterListener extends ListenerAdapter {
 		}
 		if (Objects.requireNonNull(event.getChannelLeft())
 			.getId()
-			.equals(getVoiceChannelId())) {
+			.equals(discordConfiguration.generalVoiceId)) {
 			String name = event.getMember()
 				.getEffectiveName()
 				.trim();
 			name = name.split("[ /]")[0];
-			discordClient.play(getVoiceChannelId(), awsPollyClient.synthesize("Cya later, " + name));
+			discordClient.play(discordConfiguration.generalVoiceId, awsPollyClient.synthesize("Cya later, " + name));
 		}
-	}
-
-	private String getVoiceChannelId() {
-		return System.getenv()
-			.get("GENERAL_VOICE_ID");
 	}
 }

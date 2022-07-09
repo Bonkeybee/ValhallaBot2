@@ -1,6 +1,7 @@
 package com.valhalla.services;
 
 import com.valhalla.clients.DiscordClient;
+import com.valhalla.configurations.DiscordConfiguration;
 
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
@@ -17,18 +18,22 @@ public class ScheduledService {
 	private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup()
 		.lookupClass());
 
+	private static final String STARTUP_THEME_PATH = "sounds/startup.flac";
+
+	@Inject
+	private DiscordConfiguration configuration;
+
 	@Inject
 	private StateService stateService;
 
 	@Inject
 	private DiscordClient discordClient;
 
-	@Scheduled(initialDelay = "60s")
+	@Scheduled(initialDelay = "120s")
 	public void startup() {
-		discordClient.play(System.getenv()
-			.get("GENERAL_VOICE_ID"), Objects.requireNonNull(this.getClass()
+		discordClient.play(configuration.generalVoiceId, Objects.requireNonNull(this.getClass()
 				.getClassLoader()
-				.getResource("sounds/startup.flac"))
+				.getResource(STARTUP_THEME_PATH))
 			.getFile());
 		stateService.setDiscordClientReady(true);
 	}

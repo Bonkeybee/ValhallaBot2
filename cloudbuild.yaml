@@ -12,14 +12,13 @@ steps:
   - name: gradle:jdk17
     entrypoint: gradle
     args: [ 'build' ]
+    id: Build Project
   - name: gcr.io/cloud-builders/docker
-    args: [ 'build', '--no-cache', '-t', '$_GCR_HOSTNAME/$PROJECT_ID/$_SERVICE_NAME:$COMMIT_SHA', '.', '-f', 'Dockerfile' ]
-    id: Build
+    args: [ 'build', '--no-cache', '-t', '$_GCR_PREFIX/$PROJECT_ID/$_GCR_HOSTNAME/$_SERVICE_NAME:$COMMIT_SHA', '.', '-f', 'Dockerfile' ]
+    id: Build Image
   - name: gcr.io/cloud-builders/docker
-    args:
-      - push
-      - '$_GCR_HOSTNAME/$PROJECT_ID/$_SERVICE_NAME:$COMMIT_SHA'
-    id: Push
+    args: [ 'push', '$_GCR_PREFIX/$PROJECT_ID/$_GCR_HOSTNAME/$_SERVICE_NAME:$COMMIT_SHA' ]
+    id: Push Image
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     args:
       - run
@@ -32,7 +31,7 @@ steps:
         --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID,$_LABELS
       - '--region=$_DEPLOY_REGION'
       - '--quiet'
-    id: Deploy
+    id: Deploy Image
     entrypoint: gcloud
 images:
   - '$_GCR_HOSTNAME/$PROJECT_ID/$_SERVICE_NAME:$COMMIT_SHA'
@@ -44,6 +43,7 @@ substitutions:
   _DEPLOY_REGION: us-central1
   _LABELS: gcb-trigger-id=d7160db1-c11a-4715-9478-4d781b213aa6
   _TRIGGER_ID: d7160db1-c11a-4715-9478-4d781b213aa6
+  _GCR_PREFIX: us-docker.pkg.dev
   _GCR_HOSTNAME: gcr.io
 tags:
   - gcp-cloud-build-deploy-cloud-run

@@ -17,4 +17,7 @@ public class DiscordConfiguration {
 
 	@Value("${GUILD_ID}")
 	public String guildId;
+
+	@Value("${STARTUP_THEME}")
+	public String startupTheme;
 }

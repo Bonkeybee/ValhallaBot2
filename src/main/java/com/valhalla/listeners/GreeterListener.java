@@ -4,12 +4,17 @@ import com.valhalla.clients.AwsPollyClient;
 import com.valhalla.clients.DiscordClient;
 import com.valhalla.configurations.DiscordConfiguration;
 import com.valhalla.services.StateService;
+import com.valhalla.utils.ApplicationUtils;
 import com.valhalla.utils.StringUtils;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
@@ -18,11 +23,15 @@ import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class GreeterListener extends ListenerAdapter {
+	private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup()
+		.lookupClass());
+
 	private static final String ALLOWED_CHARACTERS_REGEX = "[^\\p{L}\\p{N}\\p{P}\\p{Z}]";
 	private static final String SPLIT_REGEX = "[ /]";
 	private static final String FORMALITY = "-san";
-	private static final List<String> GREETINGS = Arrays.asList("Oy", "Hola", "Bonjour", "Howdy", "Hi-ya", "Heya", "Sup", "Wazzup", "What's up", "Yo", "Hi", "Hello", "Hey", "Wassup", "Ohayo",
-		"Ohayou", "Konnichiwa");
+	private static final List<String> GREETINGS = Arrays.asList("Oy", "Hola", "Bonjour", "Howdy", "Heya", "Sup", "Wazzup", "What's up", "Yo", "Hi", "Hello", "Hey", "Wassup", "Ohayo",
+		"Ohayou",
+		"Konnichiwa");
 	private static final List<String> FAREWELLS = Arrays.asList("Laters", "Later", "Take care", "Goodbye", "Bai bai", "Bye bye", "Bye", "See ya", "See ya later", "Adios", "Sayounara",
 		"Sayonara");
 
@@ -47,12 +56,13 @@ public class GreeterListener extends ListenerAdapter {
 			.isBot()) {
 			return;
 		}
-		if (!stateService.isDiscordClientReady()) {
+		if (stateService.isDiscordClientWaiting()) {
 			return;
 		}
 		if (Objects.requireNonNull(event.getChannelJoined())
 			.getId()
 			.equals(discordConfiguration.generalVoiceId)) {
+			ApplicationUtils.sleep(1000);
 			discordClient.play(discordConfiguration.generalVoiceId, awsPollyClient.synthesize(getGreeting() + StringUtils.COMMA + StringUtils.SPACE + getSimpleName(event.getMember())));
 		}
 	}
@@ -64,7 +74,7 @@ public class GreeterListener extends ListenerAdapter {
 			.isBot()) {
 			return;
 		}
-		if (!stateService.isDiscordClientReady()) {
+		if (stateService.isDiscordClientWaiting()) {
 			return;
 		}
 		if (Objects.requireNonNull(event.getChannelJoined())
@@ -78,6 +88,7 @@ public class GreeterListener extends ListenerAdapter {
 			.equals(discordConfiguration.generalVoiceId) && !event.getChannelJoined()
 			.getId()
 			.equals(discordConfiguration.generalVoiceId)) {
+			ApplicationUtils.sleep(1000);
 			discordClient.play(discordConfiguration.generalVoiceId, awsPollyClient.synthesize(getFarewell() + StringUtils.COMMA + StringUtils.SPACE + getSimpleName(event.getMember())));
 		}
 	}
@@ -89,12 +100,13 @@ public class GreeterListener extends ListenerAdapter {
 			.isBot()) {
 			return;
 		}
-		if (!stateService.isDiscordClientReady()) {
+		if (stateService.isDiscordClientWaiting()) {
 			return;
 		}
 		if (Objects.requireNonNull(event.getChannelLeft())
 			.getId()
 			.equals(discordConfiguration.generalVoiceId)) {
+			ApplicationUtils.sleep(1000);
 			discordClient.play(discordConfiguration.generalVoiceId, awsPollyClient.synthesize(getFarewell() + StringUtils.COMMA + StringUtils.SPACE + getSimpleName(event.getMember())));
 		}
 	}

@@ -7,8 +7,8 @@ public class StateService {
 
 	private boolean discordClientReady;
 
-	public boolean isDiscordClientReady() {
-		return discordClientReady;
+	public boolean isDiscordClientWaiting() {
+		return !discordClientReady;
 	}
 
 	public void setDiscordClientReady(final boolean discordClientReady) {

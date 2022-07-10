@@ -5,6 +5,7 @@ import com.valhalla.audio.PlayerManager;
 import com.valhalla.configurations.DiscordConfiguration;
 import com.valhalla.listeners.GreeterListener;
 import com.valhalla.services.StateService;
+import com.valhalla.utils.ApplicationUtils;
 
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
@@ -87,14 +88,14 @@ public class DiscordClient {
 		}
 	}
 
-	private void waitForDisconnect(final JDA client) throws InterruptedException {
+	private void waitForDisconnect(final JDA client) {
 		Set<String> members = Objects.requireNonNull(client.getVoiceChannelById(discordConfiguration.generalVoiceId))
 			.getMembers()
 			.stream()
 			.map(ISnowflake::getId)
 			.collect(Collectors.toSet());
 		while (members.contains(discordConfiguration.greeterId)) {
-			Thread.sleep(1000);
+			ApplicationUtils.sleep(1000);
 			members = Objects.requireNonNull(client.getVoiceChannelById(discordConfiguration.generalVoiceId))
 				.getMembers()
 				.stream()

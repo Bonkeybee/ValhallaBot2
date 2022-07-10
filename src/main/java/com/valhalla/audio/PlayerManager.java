@@ -35,17 +35,17 @@ public class PlayerManager {
 
 			@Override
 			public void playlistLoaded(final AudioPlaylist playlist) {
-				// TODO document why this method is empty
+				throw new UnsupportedOperationException();
 			}
 
 			@Override
 			public void noMatches() {
-				// TODO document why this method is empty
+				throw new UnsupportedOperationException();
 			}
 
 			@Override
 			public void loadFailed(final FriendlyException exception) {
-				// TODO document why this method is empty
+				throw new UnsupportedOperationException();
 			}
 		});
 	}

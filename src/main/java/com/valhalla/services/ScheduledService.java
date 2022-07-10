@@ -17,8 +17,6 @@ public class ScheduledService {
 	private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup()
 		.lookupClass());
 
-	private static final String STARTUP_THEME_PATH = "https://drive.google.com/uc?export=download&id=1p2hcU0J5iRHRMmaO37-KNyiC5VNJ5NKK";
-
 	@Inject
 	private DiscordConfiguration configuration;
 
@@ -30,7 +28,8 @@ public class ScheduledService {
 
 	@Scheduled(initialDelay = "0s")
 	public void startup() {
-		discordClient.play(configuration.generalVoiceId, STARTUP_THEME_PATH);
+		LOG.info("Starting DiscordClient");
+		discordClient.play(configuration.generalVoiceId, configuration.startupTheme);
 		stateService.setDiscordClientReady(true);
 	}
 }
